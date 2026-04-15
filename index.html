@@ -40,6 +40,7 @@
       background: #03dac6;
       font-size: 16px;
       margin-top: 10px;
+      cursor: pointer;
     }
 
     .like {
@@ -107,7 +108,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 🔥 REGISTRAR CLICS (CORREGIDO)
+// 🔥 REGISTRAR CLICS (COORDENADAS CORRECTAS)
 document.addEventListener("click", function(e){
 
   const x = e.clientX / window.innerWidth;
