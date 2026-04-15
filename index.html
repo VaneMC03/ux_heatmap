@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>UX Heatmap App</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -56,7 +55,6 @@
       margin-bottom: 15px;
     }
   </style>
-
 </head>
 
 <body>
@@ -69,28 +67,25 @@
 
   <div class="card">
     <h3>Producto 1</h3>
-    <p>Descripción del producto</p>
     <button>Comprar</button>
     <span class="like">❤️</span>
   </div>
 
   <div class="card">
     <h3>Producto 2</h3>
-    <p>Descripción del producto</p>
     <button>Comprar</button>
     <span class="like">❤️</span>
   </div>
 
   <div class="card">
     <h3>Producto 3</h3>
-    <p>Descripción del producto</p>
     <button>Comprar</button>
     <span class="like">❤️</span>
   </div>
 
 </div>
 
-<!-- FIREBASE -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -108,7 +103,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 🔥 REGISTRAR CLICS (COORDENADAS CORRECTAS)
+// 🔥 Capturar clics (COORDENADAS NORMALIZADAS)
 document.addEventListener("click", function(e){
 
   const x = e.clientX / window.innerWidth;
