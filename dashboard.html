@@ -1,14 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Heatmap</title>
+  <title>Heatmap Dashboard PRO</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: Arial;
+    }
+
+    .panel {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .clear {
+      background: red;
+      color: white;
+    }
+  </style>
+
 </head>
+
 <body>
 
-<h2>🔥 Heatmap en tiempo real</h2>
+<div class="panel">
+  <h3>📊 Dashboard UX</h3>
+  <p>Total clics: <span id="clicks">0</span></p>
+  <button class="clear" onclick="clearData()">🗑 Limpiar datos</button>
+</div>
 
+<!-- LIBRERÍA HEATMAP -->
 <script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.min.js"></script>
 
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -26,20 +66,46 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// Crear heatmap
 var heatmap = h337.create({
   container: document.body,
   radius: 50
 });
 
+// Contador
+let totalClicks = 0;
+let points = [];
+
+// Escuchar datos en tiempo real
 db.ref("clicks").on("child_added", function(snapshot){
   var data = snapshot.val();
 
-  heatmap.addData({
-    x: data.x,
-    y: data.y,
+  // Convertir coordenadas (IMPORTANTE)
+  var x = data.x * window.innerWidth;
+  var y = data.y * window.innerHeight;
+
+  points.push({
+    x: x,
+    y: y,
     value: 1
   });
+
+  // Dibujar heatmap
+  heatmap.setData({
+    max: 10,
+    data: points
+  });
+
+  // Actualizar contador
+  totalClicks++;
+  document.getElementById("clicks").innerText = totalClicks;
 });
+
+// Limpiar datos
+function clearData(){
+  db.ref("clicks").remove();
+  location.reload();
+}
 </script>
 
 </body>
