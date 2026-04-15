@@ -16,7 +16,6 @@
       color: white;
       padding: 15px;
       text-align: center;
-      font-size: 20px;
     }
 
     .container {
@@ -37,9 +36,7 @@
       border: none;
       border-radius: 8px;
       background: #03dac6;
-      font-size: 16px;
       margin-top: 10px;
-      cursor: pointer;
     }
 
     .like {
@@ -103,18 +100,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 🔥 Capturar clics (COORDENADAS NORMALIZADAS)
+// 🔥 COORDENADAS CORRECTAS (IMPORTANTE)
 document.addEventListener("click", function(e){
+  const rect = document.body.getBoundingClientRect();
 
-  const x = e.clientX / window.innerWidth;
-  const y = e.clientY / window.innerHeight;
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top) / rect.height;
 
   db.ref("clicks").push({
     x: x,
     y: y,
     time: Date.now()
   });
-
 });
 </script>
 
