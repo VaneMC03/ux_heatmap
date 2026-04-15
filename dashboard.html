@@ -92,46 +92,56 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 🔥 CONFIGURACIÓN CON COLORES
+// 🔥 CONFIGURACIÓN FORZADA (IMPORTANTE)
 var heatmap = h337.create({
   container: document.getElementById("heatmap"),
-  radius: 50,
-  maxOpacity: 0.9,
-  minOpacity: 0.2,
-  blur: 0.75,
+  radius: 60,
+  maxOpacity: 1,
+  minOpacity: 0.3,
+  blur: 0.9,
   gradient: {
-    0.2: "blue",
-    0.4: "green",
-    0.6: "yellow",
-    0.8: "orange",
+    0.1: "blue",
+    0.3: "green",
+    0.5: "yellow",
+    0.7: "orange",
     1.0: "red"
   }
 });
 
 let points = [];
-let total = 0;
 
-// ESCUCHAR CLICS
-db.ref("clicks").on("child_added", function(snapshot){
-  var data = snapshot.val();
+// 🔥 CARGAR TODOS LOS DATOS EXISTENTES (CLAVE)
+db.ref("clicks").once("value", function(snapshot){
+  snapshot.forEach(function(child){
+    var data = child.val();
 
-  // Escalar al tamaño del móvil
-  var x = data.x * 360;
-  var y = data.y * 640;
-
-  points.push({
-    x: x,
-    y: y,
-    value: 5
+    points.push({
+      x: data.x * 360,
+      y: data.y * 640,
+      value: 10
+    });
   });
 
   heatmap.setData({
-    max: 20,
+    max: 50,
     data: points
   });
+});
 
-  total++;
-  document.getElementById("clicks").innerText = total;
+// 🔥 ESCUCHAR NUEVOS CLICS
+db.ref("clicks").on("child_added", function(snapshot){
+  var data = snapshot.val();
+
+  points.push({
+    x: data.x * 360,
+    y: data.y * 640,
+    value: 10
+  });
+
+  heatmap.setData({
+    max: 50,
+    data: points
+  });
 });
 </script>
 
