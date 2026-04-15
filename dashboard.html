@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Heatmap</title>
+</head>
+<body>
+
+<h2>🔥 Heatmap en tiempo real</h2>
+
+<script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBp4u6cOWseLMeWXCw4uDadGSbcLfpBjPQ",
+  authDomain: "ux-heatmap.firebaseapp.com",
+  databaseURL: "https://ux-heatmap-default-rtdb.firebaseio.com",
+  projectId: "ux-heatmap",
+  storageBucket: "ux-heatmap.firebasestorage.app",
+  messagingSenderId: "455315875240",
+  appId: "1:455315875240:web:1646e645db5961f0bc299d"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+var heatmap = h337.create({
+  container: document.body,
+  radius: 50
+});
+
+db.ref("clicks").on("child_added", function(snapshot){
+  var data = snapshot.val();
+
+  heatmap.addData({
+    x: data.x,
+    y: data.y,
+    value: 1
+  });
+});
+</script>
+
+</body>
+</html>
