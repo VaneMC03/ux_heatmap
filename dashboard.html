@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Heatmap Mobile View</title>
+  <title>Heatmap Mobile PRO</title>
 
   <style>
     body {
       margin: 0;
       background: #111;
-      font-family: Arial;
-      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      font-family: Arial;
+      color: white;
     }
 
     .phone {
@@ -50,7 +50,6 @@
       border-radius: 10px;
       font-size: 12px;
     }
-
   </style>
 </head>
 
@@ -58,25 +57,24 @@
 
 <div class="phone">
 
-  <!-- Tu app -->
+  <!-- APP -->
   <iframe src="https://vanemc03.github.io/ux_heatmap/"></iframe>
 
-  <!-- Heatmap -->
+  <!-- HEATMAP -->
   <div id="heatmap"></div>
 
-  <!-- Panel -->
+  <!-- PANEL -->
   <div class="panel">
-    🔥 Heatmap en vivo  
-    <br>
+    🔥 Heatmap en vivo<br>
     Clics: <span id="clicks">0</span>
   </div>
 
 </div>
 
-<!-- heatmap.js -->
+<!-- HEATMAP.JS -->
 <script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.min.js"></script>
 
-<!-- Firebase -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -94,31 +92,41 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Crear heatmap SOBRE el móvil
+// 🔥 CONFIGURACIÓN CON COLORES
 var heatmap = h337.create({
   container: document.getElementById("heatmap"),
-  radius: 40
+  radius: 50,
+  maxOpacity: 0.9,
+  minOpacity: 0.2,
+  blur: 0.75,
+  gradient: {
+    0.2: "blue",
+    0.4: "green",
+    0.6: "yellow",
+    0.8: "orange",
+    1.0: "red"
+  }
 });
 
 let points = [];
 let total = 0;
 
-// Escuchar clics
+// ESCUCHAR CLICS
 db.ref("clicks").on("child_added", function(snapshot){
   var data = snapshot.val();
 
-  // Escalar a tamaño del "celular"
+  // Escalar al tamaño del móvil
   var x = data.x * 360;
   var y = data.y * 640;
 
   points.push({
     x: x,
     y: y,
-    value: 1
+    value: 5
   });
 
   heatmap.setData({
-    max: 10,
+    max: 20,
     data: points
   });
 
